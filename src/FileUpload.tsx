@@ -157,7 +157,7 @@ export const FileUpload: React.FC = () => {
         <Loading />
       ) : (
         <CardContent maxWidth={'50%'}>
-          <Span marginBottom={'50px'}>Upload Template</Span>
+          <Heading marginBottom={'10px'}>Upload Template</Heading>
           <Space gap={'small'} marginTop={'10px'} marginBottom={'20px'}>
             <FileUploadInput
               buttonText="Chose Template"
