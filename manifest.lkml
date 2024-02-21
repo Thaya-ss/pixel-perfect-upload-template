@@ -7,5 +7,6 @@ application: excel-template-upload {
   entitlements: {
     external_api_urls: ["https://pixelperfect.squareshift.dev"]
     core_api_methods: ["me"]
+    use_iframes: yes
   }
 }
