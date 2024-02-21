@@ -82,13 +82,10 @@ export const FileUpload: React.FC = () => {
   const [message, setMessage] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [templateName, setTemplateName] = useState<string>('')
-  const [fileName, setFileName] = useState<string[]>()
+  const [fileName, setFileName] = useState<string>('')
   const [showFileName, setShowFileName] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [existingTemplates, setExistingTemplates] = useState<string[]>([
-    'template1',
-    'template2',
-  ])
+  const [existingTemplates, setExistingTemplates] = useState<string[]>()
 
   useEffect(() => {
     const getMe = async () => {
@@ -108,13 +105,11 @@ export const FileUpload: React.FC = () => {
       setIsLoading(true)
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('templateName', templateName)
 
       uploadFile(formData).then(
         (response) => {
-          // eslint-disable-next-line no-console
-          console.log(response)
           setShowFileName(false)
+          templates()
         },
         (error) => {
           // eslint-disable-next-line no-console
@@ -122,9 +117,9 @@ export const FileUpload: React.FC = () => {
         }
       )
 
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 4000)
+      // setTimeout(() => {
+
+      // }, 4000)
     }
   }
 
@@ -136,14 +131,13 @@ export const FileUpload: React.FC = () => {
       separatedValues[separatedValues.length - 1],
     ]
   }
-
+  const templates = () => {
+    getTemplates().then((response) => {
+      setExistingTemplates(response)
+      setIsLoading(false)
+    })
+  }
   useEffect(() => {
-    const templates = () => {
-      getTemplates().then((response) => {
-        // eslint-disable-next-line no-console
-        console.log(response)
-      })
-    }
     templates()
   }, [])
 
@@ -162,23 +156,24 @@ export const FileUpload: React.FC = () => {
             <FileUploadInput
               buttonText="Chose Template"
               handleFile={function (value: File): void {
-                // eslint-disable-next-line no-console
-                console.log(value)
                 setFile(value)
-                const arr = extractFileName(value)
-                setFileName(arr)
-                setTemplateName(arr[0])
-                setShowFileName(true)
+                // const arr = extractFileName(value)
+                setFileName(value.name)
+                // setTemplateName(arr[0])
+                // setShowFileName(true)
               }}
             />
+            <Button onClick={handleSubmit} disabled={fileName?.length === 0}>
+              Save Template
+            </Button>
           </Space>
-          {showFileName ? (
+          {/* {showFileName ? (
             <>
-              <Span>Template Name</Span>
+              <Span>Selected Template</Span>
               <Space gap={'small'} marginTop={'10px'}>
                 <InputText
                   width={'76%'}
-                  defaultValue={templateName}
+                  defaultValue={}
                   onChange={(e) => {
                     const value = e.target.value
                     if (!value.includes('.')) {
@@ -188,19 +183,13 @@ export const FileUpload: React.FC = () => {
                     }
                   }}
                 ></InputText>
+                <Paragraph>{fileName}</Paragraph>
               </Space>
-              <Space gap={'small'} marginTop={'15px'}>
-                <Button
-                  onClick={handleSubmit}
-                  disabled={templateName.length === 0}
-                >
-                  Save Template
-                </Button>
-              </Space>
+              <Space gap={'small'} marginTop={'15px'}></Space>
             </>
           ) : (
             <></>
-          )}
+          )} */}
           {existingTemplates ? (
             <SpaceVertical gap={'small'} marginTop={'50px'}>
               <Heading>Existing Templates</Heading>
