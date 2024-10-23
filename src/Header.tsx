@@ -1,7 +1,18 @@
 
 import { Flex, FlexItem, Space } from '@looker/components'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 const Header = () => {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    // Fetch data from an API
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('result',result[0].body)
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
   return (
     <>
       <Flex
